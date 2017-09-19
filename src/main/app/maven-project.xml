@@ -27,13 +27,13 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
             <db:parameterized-query><![CDATA[select * from flights]]></db:parameterized-query>
         </db:select>
         <json:object-to-json-transformer doc:name="Object to JSON"/>
+        <set-property propertyName="#['Content-Type']" value="#['application/json']" doc:name="Property"/>
         <jms:outbound-endpoint queue="flights" connector-ref="Active_MQ" doc:name="JMS"/>
     </flow>
     
     
     <flow name="maven-projectFlow">
         <jms:inbound-endpoint queue="flights" connector-ref="Active_MQ" doc:name="JMS"/>
-        <set-property propertyName="Content-Type" value="#['application/json']" doc:name="Property"/>
         <logger message="#[message.payload]" level="INFO" doc:name="Logger"/>
     </flow>
     
